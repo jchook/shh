@@ -20,7 +20,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install ALSA dependencies (Linux only)
+      - name: Install system dependencies
         if: runner.os == 'Linux'
         run: sudo apt-get update && sudo apt-get install -y libasound2-dev pkg-config
 
@@ -35,16 +35,22 @@ jobs:
         run: cargo build --release
 
       # Rename the binary for clarity
-      - name: Rename Binary
+      - name: Rename Binary (Linux/macOS)
+        if: runner.os != 'Windows'
         run: |
           mkdir -p dist
-          if [[ "${{ runner.os }}" == "Windows" ]]; then
-            cp target/release/shh.exe dist/shh-windows.exe
-          elif [[ "${{ runner.os }}" == "macOS" ]]; then
-            cp target/release/shh dist/shh-darwin
+          if [[ "${{ runner.os }}" == "macOS" ]]; then
+          cp target/release/shh dist/shh-darwin
           else
-            cp target/release/shh dist/shh-linux
+          cp target/release/shh dist/shh-linux
           fi
+
+      - name: Rename Binary (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          mkdir dist
+          Copy-Item target/release/shh.exe dist/shh-windows.exe
+        shell: pwsh
 
       # Upload the built binary
       - name: Upload Artifact
