@@ -39,10 +39,11 @@ jobs:
         if: runner.os != 'Windows'
         run: |
           mkdir -p dist
+          chmod +x target/release/shh
           if [[ "${{ runner.os }}" == "macOS" ]]; then
-          cp target/release/shh dist/shh-darwin
+            cp target/release/shh dist/shh-darwin
           else
-          cp target/release/shh dist/shh-linux
+            cp target/release/shh dist/shh-linux
           fi
 
       - name: Rename Binary (Windows)
