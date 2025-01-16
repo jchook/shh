@@ -1,0 +1,74 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'  # Trigger workflow when a new tag like v1.0.0 is pushed
+
+permissions:
+  contents: write  # Required to create releases
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+
+      # Build the binary
+      - name: Build shh
+        run: cargo build --release
+
+      # Rename the binary for clarity
+      - name: Rename Binary
+        run: |
+          mkdir -p dist
+          if [[ "${{ runner.os }}" == "Windows" ]]; then
+            cp target/release/shh.exe dist/shh-windows.exe
+          elif [[ "${{ runner.os }}" == "macOS" ]]; then
+            cp target/release/shh dist/shh-darwin
+          else
+            cp target/release/shh dist/shh-linux
+          fi
+
+      # Upload the built binary
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: shh-${{ runner.os }}
+          path: dist/*
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download all build artifacts
+        uses: actions/download-artifact@v4
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          body: |
+            ## Downloads
+
+            - 🪟 **Windows:** [shh.exe](https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/shh.exe)
+            - 🐧 **Linux:** [shh-linux](https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/shh-linux)
+            - 🍎 **macOS:** [shh-darwin](https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/shh-darwin)
+          files: |
+            shh-Windows/shh-windows.exe
+            shh-macOS/shh-darwin
+            shh-Linux/shh-linux
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
