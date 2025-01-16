@@ -90,7 +90,7 @@ fn main() {
                 }
 
                 // Trigger alert if dB exceeds threshold
-                if db > config.decibel_threshold && last_alert.elapsed().as_secs() > config.alert_frequency {
+                if db > config.decibel_threshold && last_alert.elapsed().as_millis() > config.alert_frequency {
                     println!(
                         "Shh! RMS: {:.5}, Peak: {:.5}, Hybrid: {:.5}, dB: {:.2}",
                         rms, peak, hybrid_metric, db
