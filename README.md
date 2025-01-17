@@ -21,7 +21,7 @@ Environment Variables
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `SHH_ALERT_FREQUENCY` | 1000 | Time between alerts (in milliseconds) |
+| `SHH_ALERT_FREQUENCY` | 1 | Time between alerts (in seconds) |
 | `SHH_DECIBEL_THRESHOLD` | -10.0 | dB threshold for an alert |
 | `SHH_SENSITIVITY` | 0.8 | Between 0 and 1, sensitivity to volume spikes |
 

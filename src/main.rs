@@ -2,7 +2,7 @@ mod config;
 
 use config::Config;
 use cpal::traits::{DeviceTrait, HostTrait, StreamTrait};
-use rodio::{Sink, Decoder, OutputStream};
+use rodio::{Decoder, OutputStream, Sink};
 use std::io::Cursor;
 use std::process::Command;
 use std::thread::sleep;
@@ -15,39 +15,43 @@ const ALERT_OGG: &[u8] = include_bytes!("../assets/alert.ogg");
 fn send_system_notification() {
     #[cfg(target_os = "windows")]
     {
-        let _ = Command::new("msg")
+        Command::new("msg")
             .arg("*")
             .arg("Please be quiet, you are too loud!")
-            .output();
+            .output()
+            .expect("Unable to send alert");
     }
 
     #[cfg(target_os = "macos")]
     {
-        let _ = Command::new("osascript")
+        Command::new("osascript")
             .arg("-e")
             .arg("display notification \"Please be quiet, you are too loud!\" with title \"Shh\"")
-            .output();
+            .output()
+            .expect("Unable to send alert");
     }
 
     #[cfg(target_os = "linux")]
     {
-        let _ = Command::new("notify-send")
+        Command::new("notify-send")
             .arg("Shh")
             .arg("Please be quiet, you are too loud!")
-            .output();
+            .output()
+            .expect("Unable to send alert");
     }
 }
 
 fn play_alert() {
-    let (_stream, stream_handle) = OutputStream::try_default().expect("Failed to get output stream");
+    let (_stream, stream_handle) =
+        OutputStream::try_default().expect("Failed to get output stream");
     let sink = Sink::try_new(&stream_handle).expect("Failed to create Sink");
 
     let cursor = Cursor::new(ALERT_OGG);
     if let Ok(source) = Decoder::new(cursor) {
         sink.append(source);
-        sink.sleep_until_end();  // Wait for the sound to finish
+        sink.sleep_until_end(); // Wait for the sound to finish
     } else {
-        eprintln!("❌ Failed to decode alert.ogg");
+        println!("Failed to decode alert sound file");
     }
 }
 
@@ -90,7 +94,9 @@ fn main() {
                 }
 
                 // Trigger alert if dB exceeds threshold
-                if db > config.decibel_threshold && last_alert.elapsed().as_millis() > config.alert_frequency {
+                if db > config.decibel_threshold
+                    && last_alert.elapsed().as_secs() > config.alert_frequency
+                {
                     println!(
                         "Shh! RMS: {:.5}, Peak: {:.5}, Hybrid: {:.5}, dB: {:.2}",
                         rms, peak, hybrid_metric, db
