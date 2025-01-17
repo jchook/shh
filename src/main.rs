@@ -9,7 +9,7 @@ use std::thread::sleep;
 use std::time::{Duration, Instant};
 
 // Embedded alert sound
-const ALERT_OGG: &[u8] = include_bytes!("alert.ogg");
+const ALERT_OGG: &[u8] = include_bytes!("../assets/alert.ogg");
 
 // Configurable constants
 fn send_system_notification() {
