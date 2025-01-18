@@ -1,45 +1,16 @@
 mod config;
+mod notify;
 
 use config::Config;
+use notify::send_system_notification;
 use cpal::traits::{DeviceTrait, HostTrait, StreamTrait};
 use rodio::{Decoder, OutputStream, Sink};
 use std::io::Cursor;
-use std::process::Command;
 use std::thread::sleep;
 use std::time::{Duration, Instant};
 
 // Embedded alert sound
 const ALERT_OGG: &[u8] = include_bytes!("../assets/alert.ogg");
-
-// Configurable constants
-fn send_system_notification() {
-    #[cfg(target_os = "windows")]
-    {
-        Command::new("msg")
-            .arg("*")
-            .arg("Please be quiet, you are too loud!")
-            .output()
-            .expect("Unable to send alert");
-    }
-
-    #[cfg(target_os = "macos")]
-    {
-        Command::new("osascript")
-            .arg("-e")
-            .arg("display notification \"Please be quiet, you are too loud!\" with title \"Shh\"")
-            .output()
-            .expect("Unable to send alert");
-    }
-
-    #[cfg(target_os = "linux")]
-    {
-        Command::new("notify-send")
-            .arg("Shh")
-            .arg("Please be quiet, you are too loud!")
-            .output()
-            .expect("Unable to send alert");
-    }
-}
 
 fn play_alert() {
     let (_stream, stream_handle) =
@@ -102,7 +73,9 @@ fn main() {
                         rms, peak, hybrid_metric, db
                     );
                     play_alert();
-                    send_system_notification();
+                    if config.notify {
+                        send_system_notification();
+                    }
                     last_alert = Instant::now();
                 }
             },
