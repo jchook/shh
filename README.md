@@ -13,7 +13,13 @@ This app monitors the microphone input on your computer and plays a "SHH!" sound
 Download
 --------
 
-You can find binaries in the [releases](https://github.com/jchook/shh/releases) section.
+You can find binaries in the [releases](https://github.com/jchook/shhh/releases) section.
+
+If you have `cargo` installed, you can install it via crates.io:
+
+```sh
+cargo install shhh
+```
 
 Run the program from the command line (e.g. Terminal on macOS).
 
