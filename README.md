@@ -15,6 +15,8 @@ Download
 
 You can find binaries in the [releases](https://github.com/jchook/shh/releases) section.
 
+Run the program from the command line (e.g. Terminal on macOS).
+
 
 Environment Variables
 ---------------------
@@ -30,3 +32,4 @@ License
 -------
 
 MIT.
+

@@ -1,8 +1,23 @@
 [package]
 name = "shh"
-version = "0.1.0"
+version = "1.0.0"
+authors = ["Wes Roberts <takq@a.zinc.email>"]
 edition = "2021"
+description = "Get alerts when you are too loud"
+keywords = ["sound", "monitoring", "alert"]
+categories = ["audio", "command-line-utilities"]
+repository = "https://github.com/jchook/shh"
+license = "MIT"
+exclude = [
+  "/.github/",
+  "/assets/alert.wav",
+]
+
+[[bin]]
+name = "shh"
+path = "src/main.rs"
 
 [dependencies]
 cpal = "0.15.3"
 rodio = "0.20.1"
+
