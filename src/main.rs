@@ -69,7 +69,7 @@ fn main() {
                     && last_alert.elapsed().as_secs() > config.alert_frequency
                 {
                     println!(
-                        "Shh! RMS: {:.5}, Peak: {:.5}, Hybrid: {:.5}, dB: {:.2}",
+                        "Shhh! RMS: {:.5}, Peak: {:.5}, Hybrid: {:.5}, dB: {:.2}",
                         rms, peak, hybrid_metric, db
                     );
                     play_alert();

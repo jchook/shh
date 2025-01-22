@@ -587,8 +587,8 @@ dependencies = [
 ]
 
 [[package]]
-name = "shh"
-version = "0.1.0"
+name = "shhh"
+version = "1.0.0"
 dependencies = [
  "cpal",
  "rodio",

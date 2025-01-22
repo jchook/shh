@@ -10,7 +10,7 @@ pub fn send_system_notification() {
             $textNodes = $template.GetElementsByTagName('text');
             $textNodes.Item(0).AppendChild($template.CreateTextNode('Please be quiet, you are too loud!')) | Out-Null;
             $toast = [Windows.UI.Notifications.ToastNotification]::new($template);
-            [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier('Shh!').Show($toast);
+            [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier('Shhh!').Show($toast);
         "#;
 
         // Execute PowerShell command
@@ -28,7 +28,7 @@ pub fn send_system_notification() {
     {
         if let Err(e) = Command::new("osascript")
             .arg("-e")
-            .arg("display notification \"Please be quiet, you are too loud!\" with title \"Shh\"")
+            .arg("display notification \"Please be quiet, you are too loud!\" with title \"Shhh\"")
             .output()
         {
             eprintln!("Failed to send notification: {}", e);
@@ -38,7 +38,7 @@ pub fn send_system_notification() {
     #[cfg(target_os = "linux")]
     {
         if let Err(e) = Command::new("notify-send")
-            .arg("Shh")
+            .arg("Shhh")
             .arg("Please be quiet, you are too loud!")
             .output()
         {
