@@ -1,5 +1,5 @@
 [package]
-name = "shh"
+name = "shh-util"
 version = "1.0.0"
 authors = ["Wes Roberts <takq@a.zinc.email>"]
 edition = "2021"
