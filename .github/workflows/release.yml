@@ -31,7 +31,7 @@ jobs:
           override: true
 
       # Build the binary
-      - name: Build shh
+      - name: Build shhh
         run: cargo build --release
 
       # Rename the binary for clarity
@@ -39,25 +39,25 @@ jobs:
         if: runner.os != 'Windows'
         run: |
           mkdir -p dist
-          chmod +x target/release/shh
+          chmod +x target/release/shhh
           if [[ "${{ runner.os }}" == "macOS" ]]; then
-            cp target/release/shh dist/shh-darwin
+            cp target/release/shhh dist/shhh-darwin
           else
-            cp target/release/shh dist/shh-linux
+            cp target/release/shhh dist/shhh-linux
           fi
 
       - name: Rename Binary (Windows)
         if: runner.os == 'Windows'
         run: |
           mkdir dist
-          Copy-Item target/release/shh.exe dist/shh-windows.exe
+          Copy-Item target/release/shhh.exe dist/shhh-windows.exe
         shell: pwsh
 
       # Upload the built binary
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: shh-${{ runner.os }}
+          name: shhh-${{ runner.os }}
           path: dist/*
 
   release:
@@ -71,15 +71,9 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          body: |
-            ## Downloads
-
-            - 🪟 **Windows:** [shh.exe](https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/shh.exe)
-            - 🐧 **Linux:** [shh-linux](https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/shh-linux)
-            - 🍎 **macOS:** [shh-darwin](https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/shh-darwin)
           files: |
-            shh-Windows/shh-windows.exe
-            shh-macOS/shh-darwin
-            shh-Linux/shh-linux
+            shhh-Windows/shhh-windows.exe
+            shhh-macOS/shhh-darwin
+            shhh-Linux/shhh-linux
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
