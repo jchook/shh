@@ -13,11 +13,11 @@ impl Config {
     /// Load the configuration from environment variables
     pub fn load() -> Self {
         Self {
-            alert_frequency: get_env_var("SHH_ALERT_FREQUENCY", 1),
-            decibel_threshold: get_env_var("SHH_DECIBEL_THRESHOLD", -10.0),
-            notify: get_env_var("SHH_NOTIFY", true),
-            sensitivity: get_env_var("SHH_SENSITIVITY", 0.8),
-            verbose: get_env_var("SHH_VERBOSE", 0),
+            alert_frequency: get_env_var("SHHH_ALERT_FREQUENCY", 1),
+            decibel_threshold: get_env_var("SHHH_DECIBEL_THRESHOLD", -10.0),
+            notify: get_env_var("SHHH_NOTIFY", true),
+            sensitivity: get_env_var("SHHH_SENSITIVITY", 0.8),
+            verbose: get_env_var("SHHH_VERBOSE", 0),
         }
     }
 }

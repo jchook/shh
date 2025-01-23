@@ -6,7 +6,7 @@ edition = "2021"
 description = "Get alerts when you are too loud"
 keywords = ["sound", "monitoring", "alert"]
 categories = ["command-line-utilities"]
-repository = "https://github.com/jchook/shh"
+repository = "https://github.com/jchook/shhh"
 license = "MIT"
 exclude = [
   "/.github/",
